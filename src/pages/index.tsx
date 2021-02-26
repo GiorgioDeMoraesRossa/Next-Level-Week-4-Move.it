@@ -10,6 +10,9 @@ import { Countdown } from "../components/Countdown";
 import { ChallengeBox } from "../components/ChallengeBox";
 import { CountdownProvider } from "../contexts/CountdownContext";
 import { ChallengesProvider } from "../contexts/ChallengesContext";
+import { Switch } from "../components/Switch";
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 
 interface HomeProps {
   level: number;
@@ -22,6 +25,32 @@ export default function Home({
   currentExperience,
   challengesCompleted,
 }) {
+  let { theme, setTheme } = useTheme();
+  const [checked, setChecked] = useState(false);
+
+  if (!theme) {
+    theme = "light";
+  }
+
+  useEffect(() => {
+    if (theme === "dark") {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+  }, []);
+
+  const handleThemeChange = (value) => {
+    console.log(value);
+    if (theme == "light") {
+      setTheme("dark");
+      setChecked(true);
+    } else {
+      setTheme("light");
+      setChecked(false);
+    }
+  };
+
   return (
     <ChallengesProvider
       level={level}
@@ -34,6 +63,8 @@ export default function Home({
         </Head>
 
         <ExperienceBar />
+
+        <Switch handleChange={handleThemeChange} checked={checked} />
 
         <CountdownProvider>
           <section>
