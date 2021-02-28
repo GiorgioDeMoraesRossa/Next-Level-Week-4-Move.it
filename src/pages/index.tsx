@@ -12,25 +12,37 @@ import { CountdownProvider } from "../contexts/CountdownContext";
 import { ChallengesProvider } from "../contexts/ChallengesContext";
 import { Switch } from "../components/Switch";
 import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { Login as LoginComponent } from "../components/Login";
+import { AuthContext } from "../contexts/AuthContext";
 
 interface HomeProps {
   level: number;
   currentExperience: number;
   challengesCompleted: number;
+  usernameProp: string;
 }
 
 export default function Home({
   level,
   currentExperience,
   challengesCompleted,
+  usernameProp,
 }) {
   let { theme, setTheme } = useTheme();
   const [checked, setChecked] = useState(false);
+  const { username, isLoggedIn, Login } = useContext(AuthContext);
 
   if (!theme) {
     theme = "light";
   }
+
+  //ve se tem username nos cookies, se tiver loga ele
+  useEffect(() => {
+    if (usernameProp != undefined && usernameProp != "") {
+      Login(usernameProp);
+    }
+  }, [usernameProp]);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -40,8 +52,7 @@ export default function Home({
     }
   }, []);
 
-  const handleThemeChange = (value) => {
-    console.log(value);
+  const handleThemeChange = () => {
     if (theme == "light") {
       setTheme("dark");
       setChecked(true);
@@ -57,40 +68,55 @@ export default function Home({
       currentExperience={currentExperience}
       challengesCompleted={challengesCompleted}
     >
-      <div className={styles.container}>
-        <Head>
-          <title>Início | Move.it</title>
-        </Head>
+      {isLoggedIn ? (
+        <div className={styles.container}>
+          <Head>
+            <title>Início | Move.it</title>
+          </Head>
 
-        <ExperienceBar />
+          <ExperienceBar />
 
-        <Switch handleChange={handleThemeChange} checked={checked} />
+          <Switch handleChange={handleThemeChange} checked={checked} />
 
-        <CountdownProvider>
-          <section>
-            <div>
-              <Profile />
-              <CompletedChallenges />
-              <Countdown />
-            </div>
-            <div>
-              <ChallengeBox />
-            </div>
-          </section>
-        </CountdownProvider>
-      </div>
+          <CountdownProvider>
+            <section>
+              <div>
+                <Profile />
+                <CompletedChallenges />
+                <Countdown />
+              </div>
+              <div>
+                <ChallengeBox />
+              </div>
+            </section>
+          </CountdownProvider>
+        </div>
+      ) : (
+        <>
+          <Head>
+            <title>Login | Move.it</title>
+          </Head>
+          <LoginComponent />
+        </>
+      )}
     </ChallengesProvider>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { level, currentExperience, challengesCompleted } = ctx.req.cookies;
+  const {
+    level,
+    currentExperience,
+    challengesCompleted,
+    username,
+  } = ctx.req.cookies;
 
   return {
     props: {
       level: Number(level),
       currentExperience: Number(currentExperience),
       challengesCompleted: Number(challengesCompleted),
+      usernameProp: String(username),
     },
   };
 };

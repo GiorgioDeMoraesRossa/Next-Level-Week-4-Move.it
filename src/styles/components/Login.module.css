@@ -1,0 +1,89 @@
+.container {
+  flex: 1;
+  height: 100vh;
+  width: 100vw;
+  background: url("/icons/simbolo.svg") no-repeat left var(--blue);
+  background-size: 40rem Auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.content {
+  flex: 0.4;
+  padding: 0 2rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.content > img {
+  margin-bottom: 4rem;
+}
+
+.content h1 {
+  color: var(--text);
+}
+
+.content > label {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  margin: 2rem 0;
+}
+
+.content > label p {
+  margin-left: 1rem;
+  line-height: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.inputDiv {
+  background-image: linear-gradient(to right, var(--blue-dark), var(--blue));
+  color: var(--text);
+
+  height: 5rem;
+  width: 26.5rem;
+
+  padding-left: 1.5rem;
+  border-radius: 0.4rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inputDiv input {
+  border: 0;
+  background: transparent;
+
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.inputDiv input::placeholder {
+  color: var(--text);
+}
+
+.inputDiv button {
+  height: 5rem;
+  width: 5rem;
+  border: 0;
+  border-top-right-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+}
+
+.inputDiv button:disabled {
+  background: var(--blue-dark);
+  cursor: not-allowed;
+}
+
+.inputDiv button:not(:disabled) {
+  background: var(--green);
+}
