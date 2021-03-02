@@ -15,34 +15,42 @@ import { useTheme } from "next-themes";
 import { useState, useEffect, useContext } from "react";
 import { Login as LoginComponent } from "../components/Login";
 import { AuthContext } from "../contexts/AuthContext";
+import { User } from "../types";
 
 interface HomeProps {
   level: number;
   currentExperience: number;
   challengesCompleted: number;
-  usernameProp: string;
+  user: User;
 }
 
 export default function Home({
   level,
   currentExperience,
   challengesCompleted,
-  usernameProp,
+  userProp,
 }) {
   let { theme, setTheme } = useTheme();
   const [checked, setChecked] = useState(false);
-  const { username, isLoggedIn, Login } = useContext(AuthContext);
+  const { user, isLoggedIn, Login, RenewLogin } = useContext(AuthContext);
 
   if (!theme) {
     theme = "light";
   }
 
-  //ve se tem username nos cookies, se tiver loga ele
+  // ve se ja ta logado, se sim, renova
   useEffect(() => {
+    if (userProp != undefined) {
+      RenewLogin(userProp);
+    }
+  }, [userProp]);
+
+  //ve se tem username nos cookies, se tiver loga ele
+  /* useEffect(() => {
     if (usernameProp != undefined && usernameProp != "") {
       Login(usernameProp);
     }
-  }, [usernameProp]);
+  }, [usernameProp]);*/
 
   useEffect(() => {
     if (theme === "dark") {
@@ -108,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     level,
     currentExperience,
     challengesCompleted,
-    username,
+    user,
   } = ctx.req.cookies;
 
   return {
@@ -116,7 +124,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       level: Number(level),
       currentExperience: Number(currentExperience),
       challengesCompleted: Number(challengesCompleted),
-      usernameProp: String(username),
+      user: !user ? {} : JSON.parse(user),
     },
   };
 };

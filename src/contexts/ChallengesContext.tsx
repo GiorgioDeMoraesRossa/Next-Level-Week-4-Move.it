@@ -1,7 +1,15 @@
-import { createContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  ReactNode,
+  useEffect,
+  useContext,
+} from "react";
 import challenges from "../../challenges.json";
 import Cookies from "js-cookie";
 import { LevelUpModal } from "../components/LevelUpModal";
+import axios from "axios";
+import { AuthContext } from "./AuthContext";
 
 interface Challenge {
   type: "body" | "eye";
@@ -46,6 +54,7 @@ export function ChallengesProvider({
   const [isLevelUpModalOpen, setIsLevelUpModalOpen] = useState(false);
 
   const experienceToNextLevel = Math.pow((level + 1) * 4, 2);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     Notification.requestPermission();
@@ -55,6 +64,25 @@ export function ChallengesProvider({
     Cookies.set("level", String(level));
     Cookies.set("currentExperience", String(currentExperience));
     Cookies.set("challengesCompleted", String(challengesCompleted));
+
+    //atualiza no mongoDb
+    axios
+      .post("/api/updateUser", {
+        username: user.username,
+        name: user.name,
+        level,
+        currentExperience,
+        challengesCompleted,
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.status != 200) {
+          console.log("TODO: Error updating");
+        }
+      })
+      .catch((err) => {
+        console.log("TODO: ERROR: ", err.message);
+      });
   }, [level, currentExperience, challengesCompleted]);
 
   function levelUp() {

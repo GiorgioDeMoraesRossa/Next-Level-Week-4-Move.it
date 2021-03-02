@@ -44,14 +44,19 @@
 }
 
 .inputDiv {
-  background-image: linear-gradient(to right, var(--blue-dark), var(--blue));
+  /*background-image: linear-gradient(to right, var(--blue-dark), var(--blue));*/
+  background: var(--blue-dark);
   color: var(--text);
 
   height: 5rem;
-  width: 26.5rem;
+  width: 13.25 /*26.5rem*/;
 
-  padding-left: 1.5rem;
+  padding: 0 1.5rem;
   border-radius: 0.4rem;
+
+  /* p botao github */
+  align-self: center;
+  margin-right: 6.5rem;
 
   display: flex;
   flex-direction: row;
@@ -86,4 +91,19 @@
 
 .inputDiv button:not(:disabled) {
   background: var(--green);
+}
+
+.inputDiv a {
+  color: #fff;
+  font-size: 1.5rem;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inputDiv a img {
+  margin-right: 1rem;
 }

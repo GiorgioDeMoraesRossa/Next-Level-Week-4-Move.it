@@ -5,12 +5,13 @@ import { AuthContext } from "../contexts/AuthContext";
 
 export default function Profile() {
   const { level } = useContext(ChallengesContext);
-  const { username } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   return (
     <div className={styles.profileContainer}>
-      <img src={`http://github.com/${username}.png`} alt={username} />
+      <img src={`http://github.com/${user.username}.png`} alt={user.username} />
       <div>
-        <strong>{username.split(/(?=[A-Z])/).map((word) => `${word} `)}</strong>
+        {/*username antigo <strong>{username.split(/(?=[A-Z])/).map((word) => `${word} `)}</strong>*/}
+        <strong>{user.name}</strong>
         <p>
           <img src="icons/level.svg" alt="Level" />
           Level {level}
