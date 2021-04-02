@@ -31,6 +31,29 @@
   --blue-twitter: #2aa9e0;
 }
 
+body {
+  background: var(--background);
+  color: var(--text);
+}
+
+body,
+input,
+textarea,
+button {
+  font: 400 1rem "Inter", sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  font: 400 1rem "Inter", sans-serif;
+}
+
+/* media queries para responsividade */
 @media (max-width: 1180px) {
   html {
     font-size: 93.75%;
@@ -59,26 +82,4 @@
   html {
     font-size: 80%;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--text);
-}
-
-body,
-input,
-textarea,
-button {
-  font: 400 1rem "Inter", sans-serif;
-}
-
-button {
-  cursor: pointer;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-  font: 400 1rem "Inter", sans-serif;
 }
